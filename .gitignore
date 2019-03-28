@@ -1,0 +1,5 @@
+node_modules
+server-dev-dist
+server-prod-dist
+static/dist
+coverage

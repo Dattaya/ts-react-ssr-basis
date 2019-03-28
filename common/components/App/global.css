@@ -1,0 +1,8 @@
+body {
+  background: blue;
+  scrollbar-color: rebeccapurple green;
+}
+
+.test {
+  margin-top: 20px;
+}

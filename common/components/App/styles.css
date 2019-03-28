@@ -1,0 +1,32 @@
+.blink {
+  animation: blink-animation 0.8s steps(5, start) infinite;
+}
+@keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
+}
+
+.title {
+  font-size: 3.5rem;
+  text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 50px #fff;
+  color: red;
+  appearance: textfield;
+  composes: blink;
+}
+
+.button {
+  display: block;
+  margin: auto;
+  background: #607D8B;
+  height: 80px;
+  width: 450px;
+  font-weight: bold;
+  font-style: italic;
+  font-size: 2rem;
+  color: green;
+  border: 5px solid grey;
+  border-left-color: lightgrey;
+  border-top-color: lightgrey;
+  text-decoration: underline;
+}
