@@ -2,7 +2,7 @@
 
 Given how many people are afraid of webpack and especially SSR with webpack, the main goal of this boilerplate is simplicity, that's why there are four webpack configs for each environment instead of one with thirty 'if's. There is a little bit of duplication which is partially resolved by `common.js`. Some duplication is normal as we want to find a balance between DRY and intertwined spaghetti code. This way config files are short (e.g. `webpack/server-prod.js` takes only 40 lines) and easy to understand.
 
-This universal (isomorphic) boilerplate is mostly unopinionated (except `react-helmet` and `jest`), so you can use it to either build a project or create your own more opinionated boilerplate. You are free to implement whatever data fetching solution you want: Apollo Client, async redux actions, static method on a component, etc.
+This universal (isomorphic) boilerplate is mostly unopinionated (except `react-helmet` and `jest`), so you can use it to either build a project or create your own more opinionated boilerplate. You are free to integrate whatever data fetching solution you want: Apollo Client, async redux actions, static method on a component, etc.
 
 ## Features
  - Server side rendering
