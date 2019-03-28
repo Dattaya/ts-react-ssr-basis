@@ -13,6 +13,7 @@ describe('<App />', () => {
   })
 
   it('handles errors when the Lazy component fails to load', () => {
+    // @ts-ignore TODO Figure out why error 'Argument of type '"render"' is not assignable to parameter of type '"preload"''
     const renderMock = jest.spyOn(LazyLoadable, 'render').mockImplementation(() => { throw new Error() })
     const app = TestRenderer.create(<App />)
     app.root.findByType('button').props.onClick()
