@@ -26,7 +26,12 @@ module.exports = {
           { loader: 'css-loader', options: { exportOnlyLocals: true, modules: true } },
         ],
       },
-      { test: rules.imgTest, loader: 'url-loader', options: { limit: 10000, emitFile: false } },
+      { test: rules.imgTest,
+        use: [
+          { loader: 'url-loader', options: { limit: 10000, emitFile: false } },
+          'image-webpack-loader',
+        ],
+      },
       { test: rules.fontTest, loader: 'url-loader', options: { limit: 10000, emitFile: false } },
     ],
   },
