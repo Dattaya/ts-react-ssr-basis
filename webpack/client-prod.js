@@ -42,7 +42,13 @@ module.exports = {
         test: rules.imgTest,
         use: [
           { loader: 'url-loader', options: { limit: 10000 } },
-          'image-webpack-loader',
+          { loader: 'image-webpack-loader',
+            options: {
+              mozjpeg: {
+                enabled: false, // mozjpeg might not work in some environments, try to comment this out and check if all imported jpg images are in place
+              },
+            },
+          },
         ],
       },
       { test: rules.fontTest, loader: 'url-loader', options: { limit: 10000 } },
