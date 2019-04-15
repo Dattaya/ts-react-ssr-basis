@@ -14,6 +14,7 @@ module.exports = {
 
   rules: {
     devFileName: '[name].[hash:8].[ext]',
+    localIdentName: '[local]--[hash:base64:3]',
     cssTest: /\.css$/,
     imgTest: /\.(jpe?g|png|gif)$/,
     fontTest: /\.(eot|svg|otf|ttf|woff|woff2)$/,
