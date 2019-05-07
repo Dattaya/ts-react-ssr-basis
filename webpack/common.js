@@ -1,7 +1,7 @@
 const path = require('path')
 
 const rootPath = path.join(__dirname, '..')
-const prodPublicPath = '/static/dist/';
+const prodPublicPath = '/static/dist/'
 
 module.exports = {
   serverProdOutputPath: path.resolve(rootPath, 'server-prod-dist'),
