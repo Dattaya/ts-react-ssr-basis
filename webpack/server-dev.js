@@ -2,7 +2,7 @@ const webpack = require('webpack')
 const path = require('path')
 const webpackNodeExternals = require('webpack-node-externals')
 const WebpackShellPlugin = require('webpack-shell-plugin-next')
-const CleanWebpackPlugin = require('clean-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const WebpackBar = require('webpackbar')
 
 const { serverDevOutputPath, devPublicPath, resolve, plugins, rules } = require('./common')

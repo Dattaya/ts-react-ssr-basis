@@ -1,6 +1,6 @@
 const webpack = require('webpack')
 const webpackNodeExternals = require('webpack-node-externals')
-const CleanWebpackPlugin = require('clean-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 const { serverProdOutputPath, resolve, prodPublicPath: publicPath, plugins, rules } = require('./common')
 
