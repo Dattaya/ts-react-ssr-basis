@@ -25,13 +25,13 @@ module.exports = {
             resourceQuery: /global/,
             use: [
               { loader: 'style-loader' },
-              { loader: 'css-loader', options: { localIdentName: rules.localIdentName, sourceMap: true } },
+              { loader: 'css-loader', options: { modules: { localIdentName: rules.localIdentName }, sourceMap: true } },
             ],
           },
           {
             use: [
               { loader: 'style-loader' },
-              { loader: 'css-loader', options: { localIdentName: rules.localIdentName, modules: true, sourceMap: true } },
+              { loader: 'css-loader', options: { modules: { mode: 'local', localIdentName: rules.localIdentName }, sourceMap: true } },
             ],
           },
         ],

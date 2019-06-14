@@ -29,8 +29,8 @@ module.exports = {
       {
         test: rules.cssTest,
         oneOf: [
-          { loader: 'css-loader', resourceQuery: /global/, options: { localIdentName: rules.localIdentName, exportOnlyLocals: true } },
-          { loader: 'css-loader', options: { localIdentName: rules.localIdentName, exportOnlyLocals: true, modules: true } },
+          { loader: 'css-loader', resourceQuery: /global/, options: { modules: { localIdentName: rules.localIdentName }, onlyLocals: true } },
+          { loader: 'css-loader', options: { modules: { mode: 'local', localIdentName: rules.localIdentName }, onlyLocals: true } },
         ],
       },
       { test: rules.imgTest, loader: 'url-loader', options: { limit: 10000, emitFile: false, name: rules.devFileName } },

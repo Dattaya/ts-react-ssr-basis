@@ -22,8 +22,8 @@ module.exports = {
       {
         test: rules.cssTest,
         oneOf: [
-          { loader: 'css-loader', resourceQuery: /global/, options: { exportOnlyLocals: true } },
-          { loader: 'css-loader', options: { exportOnlyLocals: true, modules: true } },
+          { loader: 'css-loader', resourceQuery: /global/, options: { onlyLocals: true } },
+          { loader: 'css-loader', options: { onlyLocals: true, modules: { mode: 'local' } } },
         ],
       },
       { test: rules.imgTest,
