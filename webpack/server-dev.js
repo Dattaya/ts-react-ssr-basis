@@ -29,7 +29,7 @@ module.exports = {
       {
         test: rules.cssTest,
         oneOf: [
-          { loader: 'css-loader', resourceQuery: /global/, options: { modules: { localIdentName: rules.localIdentName }, onlyLocals: true } },
+          { loader: 'css-loader', resourceQuery: /global/, options: { modules: { mode: 'global', localIdentName: rules.localIdentName }, onlyLocals: true } },
           { loader: 'css-loader', options: { modules: { mode: 'local', localIdentName: rules.localIdentName }, onlyLocals: true } },
         ],
       },

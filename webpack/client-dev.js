@@ -25,7 +25,7 @@ module.exports = {
             resourceQuery: /global/,
             use: [
               { loader: 'style-loader' },
-              { loader: 'css-loader', options: { modules: { localIdentName: rules.localIdentName }, sourceMap: true } },
+              { loader: 'css-loader', options: { modules: { mode: 'global', localIdentName: rules.localIdentName }, sourceMap: true } },
             ],
           },
           {
