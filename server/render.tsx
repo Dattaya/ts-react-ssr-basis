@@ -4,12 +4,21 @@ import React from 'react'
 import fs from 'fs'
 import { renderToString } from 'react-dom/server'
 import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server'
-import { Helmet } from "react-helmet"
 import { Request, Response } from 'express'
+import { createHttpLink } from 'apollo-link-http'
+import { ApolloClient } from 'apollo-client'
+import { ApolloProvider } from '@apollo/react-hooks'
+import { InMemoryCache } from 'apollo-cache-inmemory'
+import { getMarkupFromTree } from '@apollo/react-hooks'
+import fetch from 'node-fetch'
+import { StaticRouter } from 'react-router-dom'
 
 import App from 'components/App'
 import config from './config'
 
+function getDataFromTree (tree: React.ReactNode, context?: { [key: string]: any }) {
+  return getMarkupFromTree({ tree, context, renderFunction: renderToString })
+}
 const stringify = (val: { [key: string]: any }): string => JSON.stringify(val).replace(/</g, '\\u003c')
 // it will be generated in server-dev-dist or server-prod-dist folders, that's why the path is in current directory
 const statsFile = path.resolve(__dirname, './loadable-stats.json')
@@ -28,35 +37,43 @@ export default async (req: Request, res: Response) => {
     extractor = new ChunkExtractor({ statsFile })
   }
 
-  const content = renderToString(
+  const apolloClient = new ApolloClient({
+    ssrMode: true,
+    link: createHttpLink({
+      uri: "https://metaphysics-production.artsy.net",
+      fetch
+    }),
+    cache: new InMemoryCache()
+  })
+
+  const content = await getDataFromTree(
     <ChunkExtractorManager extractor={extractor}>
-      <App />
+      <ApolloProvider client={apolloClient}>
+        <StaticRouter location={req.url}>
+          <App />
+        </StaticRouter>
+      </ApolloProvider>
     </ChunkExtractorManager>
   )
-  const helmet = Helmet.renderStatic() // TODO
 
   res.status(200).send(generateHtml({
     content,
-    styleTags: extractor.getStyleTags(),
     scriptTags: extractor.getScriptTags(),
-    title: helmet.title.toString(),
-    meta: helmet.meta.toString(),
-    link: helmet.link.toString(),
-    bodyAttributes: helmet.bodyAttributes.toString(),
-    data: stringify({})
+    data: stringify(apolloClient.extract()),
   }))
+
+  apolloClient.stop()
 }
 
-const generateHtml = ({ content = '', title = '', meta = '', link = '', bodyAttributes = '', styleTags = '', scriptTags = '', data = '' }): string => `<!DOCTYPE html>
+const generateHtml = ({ content = '', scriptTags = '', data = '' }): string => `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  ${title}${meta}${link}${styleTags}
 </head>
-<body ${bodyAttributes}>
+<body>
   <div id="react-view">${content}</div>
-  <script>window.DATA = ${data}</script>
+  <script>window.__DATA__ = ${data}</script>
   ${scriptTags}
 </body>
 </html>
