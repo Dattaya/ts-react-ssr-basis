@@ -23,7 +23,7 @@
     "not dead"
   ],
   "dependencies": {
-    "@apollo/react-hooks": "0.1.0-beta.8",
+    "@apollo/react-hooks": "0.1.0-beta.9",
     "@babel/polyfill": "^7.4.4",
     "@loadable/component": "^5.10.1",
     "@loadable/server": "^5.9.0",
