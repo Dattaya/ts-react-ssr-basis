@@ -24,9 +24,7 @@ class App extends React.Component {
         >
           <title>Home</title>
         </Helmet>
-        {/*
-        // @ts-ignore */}
-        <marquee><h1 className={classes.title}>Welcome to Bob's Home Page</h1></marquee> {// eslint-disable-line
+        <h1 className={classes.title}>Welcome to Bob's Home Page</h1>
         }
         <ErrorBoundary>
           {isLoadableComponentShown ? <LazyLoadable /> : <button className={classes.button} onClick={this.showLoadableComponent}>Load lazy component</button>}

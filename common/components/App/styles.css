@@ -13,6 +13,7 @@
   color: red;
   appearance: textfield;
   composes: blink;
+  text-align: center;
 }
 
 .button {
