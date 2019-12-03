@@ -4,8 +4,8 @@ import React from 'react'
 import fs from 'fs'
 import { renderToString } from 'react-dom/server'
 import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server'
-import { Helmet } from "react-helmet"
 import { Request, Response } from 'express'
+import { HelmetProvider, FilledContext } from 'react-helmet-async'
 
 import App from 'components/App'
 import config from './config'
@@ -29,13 +29,16 @@ export default async (req: Request, res: Response) => {
   if (config.isDev) {
     extractor = new ChunkExtractor({ statsFile })
   }
+  const helmetContext: FilledContext = { helmet: null }
 
   const content = renderToString(
     <ChunkExtractorManager extractor={extractor}>
-      <App />
+      <HelmetProvider context={helmetContext}>
+        <App />
+      </HelmetProvider>
     </ChunkExtractorManager>
   )
-  const helmet = Helmet.renderStatic() // TODO
+  const { helmet } = helmetContext
 
   res.status(200).send(generateHtml({
     content,

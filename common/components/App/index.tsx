@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react'
-import { Helmet } from "react-helmet"
+import { Helmet } from 'react-helmet-async'
 
 import LazyLoadable from 'components/Lazy/loadable'
 import ErrorBoundary from './ErrorBoundary'
@@ -18,7 +18,6 @@ const App: React.FunctionComponent = () => {
         <title>Home</title>
       </Helmet>
       <h1 className={classes.title}>Welcome to Bob's Home Page</h1>
-      }
       <ErrorBoundary>
         {isLoadableComponentShown ? <LazyLoadable /> : <button className={classes.button} onClick={showLoadableComponent}>Load lazy component</button>}
       </ErrorBoundary>
