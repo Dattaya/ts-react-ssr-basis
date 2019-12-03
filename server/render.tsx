@@ -10,7 +10,9 @@ import { Request, Response } from 'express'
 import App from 'components/App'
 import config from './config'
 
-const stringify = (val: { [key: string]: any }): string => JSON.stringify(val).replace(/</g, '\\u003c')
+// Why `JSON.parse()`: https://www.youtube.com/watch?v=ff4fgQxPaO0
+const stringify = (val: any): string => val === undefined ? '""' : `JSON.parse('${JSON.stringify(val).replace(/</g, '\\u003c').replace('\'', '\\\'')}')`
+
 // it will be generated in server-dev-dist or server-prod-dist folders, that's why the path is in current directory
 const statsFile = path.resolve(__dirname, './loadable-stats.json')
 if (config.isDev) {
