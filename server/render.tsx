@@ -11,7 +11,7 @@ import App from 'components/App'
 import config from './config'
 
 // Why `JSON.parse()`: https://www.youtube.com/watch?v=ff4fgQxPaO0
-const stringify = (val: any): string => val === undefined ? '""' : `JSON.parse('${JSON.stringify(val).replace(/</g, '\\u003c').replace('\'', '\\\'')}')`
+const stringify = (val: any): string => val === undefined ? '""' : `JSON.parse(${JSON.stringify(JSON.stringify(val).replace(/</g, '\\u003c'))})`
 
 // it will be generated in server-dev-dist or server-prod-dist folders, that's why the path is in current directory
 const statsFile = path.resolve(__dirname, './loadable-stats.json')
