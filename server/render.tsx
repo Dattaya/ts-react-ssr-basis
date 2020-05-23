@@ -25,7 +25,7 @@ if (!config.isDev) {
   extractor = new ChunkExtractor({ statsFile })
 }
 
-export default async (req: Request, res: Response) => {
+export default async (req: Request, res: Response): Promise<void> => {
   if (config.isDev) {
     extractor = new ChunkExtractor({ statsFile })
   }
