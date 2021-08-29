@@ -1,9 +1,28 @@
 const LoadablePlugin = require('@loadable/webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const merge = require('webpack-merge').default
 
 const { serverProdOutputPath, staticDistPath, prodPublicPath: publicPath, resolve, rules } = require('./common')
+
+const postCssLoader = {
+  loader: "postcss-loader",
+  options: {
+    postcssOptions: {
+      plugins: [
+        [
+          "postcss-preset-env",
+          {
+            features: {
+              'logical-properties-and-values': false, // Otherwise `margin-inline-start` won't not work
+            },
+          },
+        ],
+      ],
+    },
+  },
+}
 
 module.exports = {
   mode: 'production',
@@ -19,7 +38,10 @@ module.exports = {
   },
   module: {
     rules: [
-      rules.tsLoader,
+      rules.mjsLoader,
+      merge(rules.tsLoader, {
+        use: { options: { envName: 'client-prod' } },
+      }),
       {
         test: rules.cssTest,
         oneOf: [
@@ -27,34 +49,34 @@ module.exports = {
             resourceQuery: /global/,
             use: [
               MiniCssExtractPlugin.loader,
-              { loader: 'css-loader' },
+              { loader: 'css-loader', options: { importLoaders: 1 } },
+              postCssLoader
             ],
           },
           {
             use: [
               MiniCssExtractPlugin.loader,
-              { loader: 'css-loader', options: { modules: { mode: 'local' } } },
+              { loader: 'css-loader', options: { modules: { mode: 'local' }, importLoaders: 1 } },
+              postCssLoader,
             ],
           },
         ],
       },
-      {
-        test: rules.imgTest,
-        use: [
-          { loader: 'url-loader', options: { limit: 10000 } },
-          'image-webpack-loader',
-        ],
-      },
-      { test: rules.fontTest, loader: 'url-loader', options: { limit: 10000 } },
+      merge(rules.imgLoader, {
+        use: ['image-webpack-loader']
+      }),
+      rules.fontLoader,
+    ],
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      '...',
+      new CssMinimizerPlugin(),
     ],
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new OptimizeCssAssetsPlugin({
-      cssProcessorPluginOptions: {
-        preset: ['advanced', { autoprefixer: { browsers: [">0.2%", "not dead"] }, zindex: false, reduceIdents: false, mergeIdents: false, discardUnused: false }],
-      },
-    }),
     new MiniCssExtractPlugin({
       filename: '[chunkhash].css',
       chunkFilename: '[chunkhash].chunk.css',

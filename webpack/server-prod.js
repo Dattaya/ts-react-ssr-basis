@@ -1,6 +1,6 @@
 const webpack = require('webpack')
 const webpackNodeExternals = require('webpack-node-externals')
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const merge = require('webpack-merge').default
 
 const { serverProdOutputPath, resolve, prodPublicPath: publicPath, plugins, rules } = require('./common')
 
@@ -18,26 +18,27 @@ module.exports = {
   node: false, // Do not mock __dirname and others, https://webpack.js.org/configuration/node/#node
   module: {
     rules: [
-      rules.tsLoader,
+      rules.mjsLoader,
+      merge(rules.tsLoader, {
+        use: { options: { envName: 'server' } },
+      }),
       {
         test: rules.cssTest,
         oneOf: [
-          { loader: 'css-loader', resourceQuery: /global/, options: { onlyLocals: true } },
-          { loader: 'css-loader', options: { onlyLocals: true, modules: { mode: 'local' } } },
+          { loader: 'css-loader', resourceQuery: /global/, options: { modules: { exportOnlyLocals: true } } },
+          { loader: 'css-loader', options: { modules: { mode: 'local', exportOnlyLocals: true } } },
         ],
       },
-      { test: rules.imgTest,
-        use: [
-          { loader: 'url-loader', options: { limit: 10000, emitFile: false } },
-          'image-webpack-loader',
-        ],
-      },
-      { test: rules.fontTest, loader: 'url-loader', options: { limit: 10000, emitFile: false } },
+      merge(rules.imgLoader, {
+        generator: { emit: false },
+      }),
+      merge(rules.fontLoader, {
+        generator: { emit: false },
+      }),
     ],
   },
-  externals: [webpackNodeExternals({ whitelist: plugins.webpackNodeExternalsWhitelist })], // ignore 'node-modules' but process files that match regex in 'whitelist'
+  externals: [webpackNodeExternals({ allowlist: plugins.webpackNodeExternalsWhitelist })], // ignore 'node-modules' but process files that match regex in 'whitelist'
   plugins: [
-    new CleanWebpackPlugin(),
     new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }), // Keep everything in one file on the server
   ],
   resolve,
