@@ -25,7 +25,5 @@ Webpack configs are located in the `webpack` folder with self-explanatory names:
  - `npm run lint` — lint
  - `npm test` — test with Jest
 
-To build and start a docker image run `docker-compose up -d --build` and then open a website at http://192.168.99.100 or whatever the return value of `docker-machine ip` command is.
-
 ## License
 MIT, except an image in the `Lazy` folder, it's in public domain.
