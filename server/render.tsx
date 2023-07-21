@@ -1,25 +1,23 @@
 import path from 'path'
 import React from 'react'
 import fs from 'fs'
-import { renderToString } from 'react-dom/server'
 import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server'
 import { Request, Response } from 'express'
+import { ApolloProvider, ApolloClient, HttpLink } from '@apollo/client'
+import { renderToStringWithData } from '@apollo/client/react/ssr'
+import fetch from 'cross-fetch'
 
-import { createHttpLink } from 'apollo-link-http'
-import { ApolloClient } from 'apollo-client'
-import { ApolloProvider } from '@apollo/react-hooks'
-import { InMemoryCache } from 'apollo-cache-inmemory'
-import { getMarkupFromTree } from '@apollo/react-hooks'
-import fetch from 'node-fetch'
 import { StaticRouter } from 'react-router-dom'
 
 import App from '@/components/App'
+import createApolloCache from '@/createApolloCache'
 import config from './config'
 
-function getDataFromTree (tree: React.ReactNode, context?: { [key: string]: any }) {
-  return getMarkupFromTree({ tree, context, renderFunction: renderToString })
-}
-const stringify = (val: { [key: string]: any }): string => JSON.stringify(val).replace(/</g, '\\u003c')
+const stringify = (val: { [key: string]: any }): string => (
+  val === undefined
+    ? '""'
+    : `JSON.parse(${JSON.stringify(JSON.stringify(val).replace(/</g, '\\u003c'))})`
+)
 // it will be generated in server-dev-dist or server-prod-dist folders, that's why the path is in current directory
 const statsFile = path.resolve(__dirname, './loadable-stats.json')
 if (config.isDev) {
@@ -39,14 +37,14 @@ export default async (req: Request, res: Response): Promise<void> => {
 
   const apolloClient = new ApolloClient({
     ssrMode: true,
-    link: createHttpLink({
+    link: new HttpLink({
       uri: "https://metaphysics-production.artsy.net",
-      fetch
+      fetch,
     }),
-    cache: new InMemoryCache()
+    cache: createApolloCache(),
   })
 
-  const content = await getDataFromTree(
+  const content = await renderToStringWithData(
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore ChunkExtractorManager is missing children prop
     <ChunkExtractorManager extractor={extractor}>

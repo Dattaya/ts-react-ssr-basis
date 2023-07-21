@@ -1,22 +1,20 @@
 import React from 'react'
 import { hydrateRoot, createRoot } from 'react-dom/client'
-import { ApolloClient } from 'apollo-client'
-import { ApolloProvider } from '@apollo/react-hooks'
-import { InMemoryCache } from 'apollo-cache-inmemory'
-import { createHttpLink } from 'apollo-link-http'
+import { ApolloProvider, ApolloClient, HttpLink, type NormalizedCacheObject } from '@apollo/client'
 import { BrowserRouter } from 'react-router-dom'
 import { loadableReady } from '@loadable/component'
 
 import App from '@/components/App'
+import createApolloCache from '@/createApolloCache'
 
-const httpLink = createHttpLink({
-  uri: 'https://metaphysics-production.artsy.net'
-})
+declare global {
+  interface Window { __DATA__: NormalizedCacheObject; }
+}
 
 const client = new ApolloClient({
   assumeImmutableResults: true,
-  link: httpLink,
-  cache: new InMemoryCache({ freezeResults: true }).restore(window.__DATA__)
+  link: new HttpLink({ uri: 'https://metaphysics-production.artsy.net' }),
+  cache: createApolloCache().restore(window.__DATA__),
 })
 
 const getTree = () => (

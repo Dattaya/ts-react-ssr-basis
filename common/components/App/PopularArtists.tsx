@@ -1,6 +1,5 @@
-import React from 'react'
-import { useQuery } from '@apollo/react-hooks'
-import gql from 'graphql-tag'
+import React, { type ReactNode } from 'react'
+import { useQuery, gql } from '@apollo/client'
 
 const popularArtistsQuery = gql`
   query PopularArtists {
@@ -12,7 +11,7 @@ const popularArtistsQuery = gql`
   }
 `
 
-export default function PopularArtists() {
+export default function PopularArtists(): ReactNode {
   const { data } = useQuery(popularArtistsQuery)
   console.log(data)
   if (data && data.popular_artists) {
