@@ -4,8 +4,6 @@ Given how many people are afraid of webpack and especially SSR with webpack, the
 
 This universal (isomorphic) boilerplate is mostly unopinionated (except `react-helmet-async` and `jest`), so you can use it to build a project, or create your own more opinionated boilerplate, or learn how libraries like [Razzle](https://github.com/jaredpalmer/razzle/) work. You are free to integrate whatever data fetching solution you want: Apollo Client, async redux actions, static method on a component, etc.
 
-For now dev mode works only on Unix-like OSes.
-
 ## Features
  - Server side rendering
  - TypeScript

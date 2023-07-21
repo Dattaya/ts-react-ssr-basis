@@ -54,7 +54,9 @@ module.exports = {
     new CleanWebpackPlugin(),
     new WebpackShellPlugin({ // 'webpack watch: true' runs indefinitely, so to be able to start the server right after the initial build, we need to use this plugin
       onBuildEnd: {
-        scripts: [`node ${path.join(__dirname, 'waitUntilLoadableStatsCreated')} && node ${path.join(serverDevOutputPath, 'server.js')} &`],
+        scripts: [`node ${path.join(__dirname, 'waitUntilLoadableStatsCreated')} && node ${path.join(serverDevOutputPath, 'server.js')}`],
+        blocking: false,
+        parallel: true,
       },
     }),
     new webpack.HotModuleReplacementPlugin(),
