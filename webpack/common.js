@@ -22,7 +22,7 @@ module.exports = {
     mjsLoader: {
       test: /\.mjs$/,
       include: /node_modules/,
-      type: "javascript/auto",
+      type: 'javascript/auto',
       resolve: {
         fullySpecified: false, // https://github.com/graphql/graphql-js/issues/2721#issuecomment-723008284
       },
@@ -33,7 +33,7 @@ module.exports = {
       parser: { dataUrlCondition: { maxSize: 10000 } },
     },
     imgLoader: {
-      test: /\.(jpe?g|png|gif)$/,
+      test: /\.(jpe?g|png|gif|avif|webp)$/,
       type: "asset",
       parser: { dataUrlCondition: { maxSize: 10000 } },
     },
