@@ -38,7 +38,7 @@ export default async (req: Request, res: Response): Promise<void> => {
   const apolloClient = new ApolloClient({
     ssrMode: true,
     link: new HttpLink({
-      uri: "https://metaphysics-production.artsy.net",
+      uri: "https://metaphysics-production.artsy.net/v2",
       fetch,
     }),
     cache: createApolloCache(),

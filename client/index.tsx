@@ -13,7 +13,7 @@ declare global {
 
 const client = new ApolloClient({
   assumeImmutableResults: true,
-  link: new HttpLink({ uri: 'https://metaphysics-production.artsy.net' }),
+  link: new HttpLink({ uri: 'https://metaphysics-production.artsy.net/v2' }),
   cache: createApolloCache().restore(window.__DATA__),
 })
 
