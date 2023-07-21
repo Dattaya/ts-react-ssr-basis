@@ -1,23 +1,30 @@
-import '@babel/polyfill'
 import React from 'react'
-import { hydrate } from 'react-dom'
+import { hydrateRoot, createRoot } from 'react-dom/client'
 import { HelmetProvider } from 'react-helmet-async'
+import { loadableReady } from '@loadable/component'
 
 import App from '@/components/App'
 
-const renderApp = (): void => {
-  hydrate(
-    <HelmetProvider>
-      <App />
-    </HelmetProvider>,
-    document.getElementById('react-view'),
-  )
-}
+const getTree = () => (
+  <HelmetProvider>
+    <App />
+  </HelmetProvider>
+)
 
-renderApp()
+const container = document.getElementById('react-view')
+if (container) {
+  const rerender = () => {
+    const root = createRoot(container)
+    root.render(getTree())
+  }
 
-if (module.hot) {
-  module.hot.accept('@/components/App', () => {
-    renderApp()
+  loadableReady(() => {
+    hydrateRoot(container, getTree())
   })
+
+  if (module.hot) {
+    module.hot.accept('@/components/App', () => {
+      rerender()
+    })
+  }
 }

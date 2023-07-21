@@ -1,11 +1,10 @@
-import '@babel/polyfill'
 import path from 'path'
 import React from 'react'
 import fs from 'fs'
 import { renderToString } from 'react-dom/server'
 import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server'
 import { Request, Response } from 'express'
-import { HelmetProvider, FilledContext } from 'react-helmet-async'
+import { HelmetProvider, type HelmetServerState } from 'react-helmet-async'
 
 import App from '@/components/App'
 import config from './config'
@@ -29,9 +28,11 @@ export default async (req: Request, res: Response): Promise<void> => {
   if (config.isDev) {
     extractor = new ChunkExtractor({ statsFile })
   }
-  const helmetContext: FilledContext = { helmet: null }
+  const helmetContext: { helmet?: HelmetServerState } = {}
 
   const content = renderToString(
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore ChunkExtractorManager is missing children prop
     <ChunkExtractorManager extractor={extractor}>
       <HelmetProvider context={helmetContext}>
         <App />
@@ -44,10 +45,10 @@ export default async (req: Request, res: Response): Promise<void> => {
     content,
     styleTags: extractor.getStyleTags(),
     scriptTags: extractor.getScriptTags(),
-    title: helmet.title.toString(),
-    meta: helmet.meta.toString(),
-    link: helmet.link.toString(),
-    bodyAttributes: helmet.bodyAttributes.toString(),
+    title: helmet?.title.toString(),
+    meta: helmet?.meta.toString(),
+    link: helmet?.link.toString(),
+    bodyAttributes: helmet?.bodyAttributes.toString(),
     data: stringify({})
   }))
 }

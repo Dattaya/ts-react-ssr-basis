@@ -6,7 +6,7 @@ import App from '@/components/App'
 import LazyLoadable from '@/components/Lazy/loadable'
 
 const AppH = () => (<HelmetProvider><App /></HelmetProvider>)
-jest.mock('components/Lazy/loadable', () => jest.fn(() => null))
+jest.mock('@/components/Lazy/loadable', () => jest.fn(() => null))
 
 describe('<App />', () => {
   it('hides the button and loads the Lazy component', () => {
