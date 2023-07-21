@@ -1,5 +1,5 @@
 const LoadablePlugin = require('@loadable/webpack-plugin')
-const WebpackBar = require('webpackbar')
+const merge = require('webpack-merge').default
 
 const { serverDevOutputPath, staticDistPath, devPublicPath, resolve, rules } = require('./common')
 
@@ -12,12 +12,16 @@ module.exports = {
   target: 'web',
   output: {
     path: staticDistPath,
-    filename: '[name].[hash].js',
+    filename: '[name].[contenthash].js',
+    chunkFilename: '[name].[contenthash].chunk.js',
     publicPath: devPublicPath,
   },
   module: {
     rules: [
-      rules.tsLoader,
+      rules.mjsLoader,
+      merge(rules.tsLoader, {
+        use: { options: { envName: 'client-dev' } },
+      }),
       {
         test: rules.cssTest,
         oneOf: [
@@ -36,8 +40,12 @@ module.exports = {
           },
         ],
       },
-      { test: rules.imgTest, loader: 'url-loader', options: { limit: 10000, name: rules.devFileName } },
-      { test: rules.fontTest, loader: 'url-loader', options: { limit: 10000, name: rules.devFileName } },
+      merge(rules.imgLoader, {
+        generator: { filename: rules.devFileName },
+      }),
+      merge(rules.fontLoader, {
+        generator: { filename: rules.devFileName },
+      }),
     ],
   },
   devServer: { // https://webpack.js.org/configuration/dev-server/
@@ -54,9 +62,6 @@ module.exports = {
   },
   plugins: [
     new LoadablePlugin({ writeToDisk: { filename: serverDevOutputPath } }),
-    new WebpackBar({
-      name: 'client',
-    }),
   ],
   resolve,
 }

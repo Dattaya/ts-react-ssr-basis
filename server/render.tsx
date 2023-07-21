@@ -1,10 +1,10 @@
-import '@babel/polyfill'
 import path from 'path'
 import React from 'react'
 import fs from 'fs'
 import { renderToString } from 'react-dom/server'
 import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server'
 import { Request, Response } from 'express'
+
 import { createHttpLink } from 'apollo-link-http'
 import { ApolloClient } from 'apollo-client'
 import { ApolloProvider } from '@apollo/react-hooks'
@@ -13,7 +13,7 @@ import { getMarkupFromTree } from '@apollo/react-hooks'
 import fetch from 'node-fetch'
 import { StaticRouter } from 'react-router-dom'
 
-import App from 'components/App'
+import App from '@/components/App'
 import config from './config'
 
 function getDataFromTree (tree: React.ReactNode, context?: { [key: string]: any }) {
@@ -32,7 +32,7 @@ if (!config.isDev) {
   extractor = new ChunkExtractor({ statsFile })
 }
 
-export default async (req: Request, res: Response) => {
+export default async (req: Request, res: Response): Promise<void> => {
   if (config.isDev) {
     extractor = new ChunkExtractor({ statsFile })
   }
@@ -47,6 +47,8 @@ export default async (req: Request, res: Response) => {
   })
 
   const content = await getDataFromTree(
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore ChunkExtractorManager is missing children prop
     <ChunkExtractorManager extractor={extractor}>
       <ApolloProvider client={apolloClient}>
         <StaticRouter location={req.url}>

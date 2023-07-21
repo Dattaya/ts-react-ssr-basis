@@ -1,7 +1,8 @@
 module.exports = {
   verbose: true,
   rootDir: '..',
-  moduleDirectories: ['node_modules', 'common'],
+  moduleDirectories: ['node_modules'],
+  moduleNameMapper: { "^@/(.*)$": "<rootDir>/common/$1" },
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json'],
   moduleNameMapper: {
     '\\.(css\\?global|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/jest/fileMock.js',

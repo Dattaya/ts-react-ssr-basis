@@ -37,10 +37,23 @@
       ],
     },
     "client-prod": {
-      // targets will be taken from 'package.json', and 'env' preset from the common config above
+      "presets": [
+        [
+          "@babel/preset-env", {
+            "modules": false,
+            "bugfixes": true,
+            "useBuiltIns": "usage",
+            "corejs": { "version": "3.31", "proposals": true },
+            // "debug": true
+          },
+        ],
+      ],
+      // targets will be taken from 'package.json'
       "plugins": [
         "@babel/plugin-transform-react-constant-elements",
         "@babel/plugin-transform-react-inline-elements",
+        "@babel/plugin-proposal-optional-chaining",
+        "@babel/plugin-proposal-nullish-coalescing-operator",
       ],
     },
     "test": {

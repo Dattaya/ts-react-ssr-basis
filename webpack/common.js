@@ -4,6 +4,9 @@ const rootPath = path.join(__dirname, '..')
 const prodPublicPath = '/static/dist/'
 
 module.exports = {
+  commonConfig: {
+
+  },
   serverProdOutputPath: path.resolve(rootPath, 'server-prod-dist'),
   serverDevOutputPath: path.resolve(rootPath, 'server-dev-dist'),
 
@@ -16,21 +19,39 @@ module.exports = {
     devFileName: '[name].[hash:8].[ext]',
     localIdentName: '[local]--[hash:base64:3]',
     cssTest: /\.css$/,
-    imgTest: /\.(jpe?g|png|gif)$/,
-    fontTest: /\.(eot|svg|otf|ttf|woff|woff2)$/,
+    mjsLoader: {
+      test: /\.mjs$/,
+      include: /node_modules/,
+      type: 'javascript/auto',
+      resolve: {
+        fullySpecified: false, // https://github.com/graphql/graphql-js/issues/2721#issuecomment-723008284
+      },
+    },
+    fontLoader: {
+      test: /\.(eot|svg|otf|ttf|woff|woff2)$/,
+      type: "asset",
+      parser: { dataUrlCondition: { maxSize: 10000 } },
+    },
+    imgLoader: {
+      test: /\.(jpe?g|png|gif|avif|webp)$/,
+      type: "asset",
+      parser: { dataUrlCondition: { maxSize: 10000 } },
+    },
     tsLoader: {
       test: /\.tsx?$/,
-      use: 'babel-loader',
+      use: {
+        loader: 'babel-loader',
+      },
       exclude: /node_modules/,
     },
   },
 
   resolve: {
     alias: {
-      // allows for imports like "import App from 'components/App'" instead of '../../components/App'
-      'components': path.join(rootPath, 'common/components/'), // keep in sync with `tsconfig.json`
+      // allows for imports like "import App from '@/components/App'" instead of '../../components/App'
+      '@': path.join(rootPath, 'common'), // keep in sync with `tsconfig.json`
     },
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+    extensions: ['.mjs', '.js', '.jsx', '.ts', '.tsx', '.json'],
   },
 
   plugins: {

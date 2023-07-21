@@ -1,13 +1,13 @@
-import '@babel/polyfill'
 import React from 'react'
-import { hydrate } from 'react-dom'
+import { hydrateRoot, createRoot } from 'react-dom/client'
 import { ApolloClient } from 'apollo-client'
 import { ApolloProvider } from '@apollo/react-hooks'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { createHttpLink } from 'apollo-link-http'
 import { BrowserRouter } from 'react-router-dom'
+import { loadableReady } from '@loadable/component'
 
-import App from 'components/App'
+import App from '@/components/App'
 
 const httpLink = createHttpLink({
   uri: 'https://metaphysics-production.artsy.net'
@@ -19,21 +19,28 @@ const client = new ApolloClient({
   cache: new InMemoryCache({ freezeResults: true }).restore(window.__DATA__)
 })
 
-const renderApp = (): void => {
-  hydrate(
-    <ApolloProvider client={client}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ApolloProvider>,
-    document.getElementById('react-view'),
-  )
-}
+const getTree = () => (
+  <ApolloProvider client={client}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </ApolloProvider>
+)
 
-renderApp()
+const container = document.getElementById('react-view')
+if (container) {
+  const rerender = () => {
+    const root = createRoot(container)
+    root.render(getTree())
+  }
 
-if (module.hot) {
-  module.hot.accept('components/App', () => {
-    renderApp()
+  loadableReady(() => {
+    hydrateRoot(container, getTree())
   })
+
+  if (module.hot) {
+    module.hot.accept('@/components/App', () => {
+      rerender()
+    })
+  }
 }
