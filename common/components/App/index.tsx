@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import { Helmet } from 'react-helmet-async'
 
-import LazyLoadable from 'components/Lazy/loadable'
+import LazyLoadable from '@/components/Lazy/loadable'
 import ErrorBoundary from './ErrorBoundary'
 import './global.css?global'
 import classes from './styles.css'

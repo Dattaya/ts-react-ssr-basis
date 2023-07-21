@@ -3,7 +3,7 @@ import React from 'react'
 import { hydrate } from 'react-dom'
 import { HelmetProvider } from 'react-helmet-async'
 
-import App from 'components/App'
+import App from '@/components/App'
 
 const renderApp = (): void => {
   hydrate(
@@ -17,7 +17,7 @@ const renderApp = (): void => {
 renderApp()
 
 if (module.hot) {
-  module.hot.accept('components/App', () => {
+  module.hot.accept('@/components/App', () => {
     renderApp()
   })
 }

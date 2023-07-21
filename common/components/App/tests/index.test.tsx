@@ -2,8 +2,8 @@ import React from 'react'
 import tr from 'react-test-renderer'
 import { HelmetProvider } from 'react-helmet-async'
 
-import App from 'components/App'
-import LazyLoadable from 'components/Lazy/loadable'
+import App from '@/components/App'
+import LazyLoadable from '@/components/Lazy/loadable'
 
 const AppH = () => (<HelmetProvider><App /></HelmetProvider>)
 jest.mock('components/Lazy/loadable', () => jest.fn(() => null))

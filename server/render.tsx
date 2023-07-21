@@ -7,7 +7,7 @@ import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server'
 import { Request, Response } from 'express'
 import { HelmetProvider, FilledContext } from 'react-helmet-async'
 
-import App from 'components/App'
+import App from '@/components/App'
 import config from './config'
 
 // Why `JSON.parse()`: https://www.youtube.com/watch?v=ff4fgQxPaO0

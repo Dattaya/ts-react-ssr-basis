@@ -48,8 +48,8 @@ module.exports = {
 
   resolve: {
     alias: {
-      // allows for imports like "import App from 'components/App'" instead of '../../components/App'
-      'components': path.join(rootPath, 'common/components/'), // keep in sync with `tsconfig.json`
+      // allows for imports like "import App from '@/components/App'" instead of '../../components/App'
+      '@': path.join(rootPath, 'common'), // keep in sync with `tsconfig.json`
     },
     extensions: ['.mjs', '.js', '.jsx', '.ts', '.tsx', '.json'],
   },
