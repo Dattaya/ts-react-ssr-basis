@@ -4,6 +4,7 @@ import { ApolloProvider, ApolloClient, HttpLink, type NormalizedCacheObject } fr
 import { BrowserRouter } from 'react-router-dom'
 import { loadableReady } from '@loadable/component'
 
+import commConfig from '@/config'
 import App from '@/components/App'
 import createApolloCache from '@/createApolloCache'
 
@@ -13,7 +14,7 @@ declare global {
 
 const client = new ApolloClient({
   assumeImmutableResults: true,
-  link: new HttpLink({ uri: 'https://metaphysics-production.artsy.net/v2' }),
+  link: new HttpLink({ uri: commConfig.gqlServerUrl, useGETForQueries: true }),
   cache: createApolloCache().restore(window.__DATA__),
 })
 

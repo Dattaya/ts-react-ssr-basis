@@ -11,7 +11,9 @@ const popularArtistsQuery = gql`
 `
 
 export default function PopularArtists(): ReactNode {
-  const { error } = useQuery(popularArtistsQuery)
+  const { error } = useQuery(popularArtistsQuery, {
+    fetchPolicy: 'cache-first',
+  })
   console.log(typeof error)
 
   return null

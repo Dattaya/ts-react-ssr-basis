@@ -11,6 +11,7 @@ import { StaticRouter } from 'react-router-dom'
 
 import App from '@/components/App'
 import createApolloCache from '@/createApolloCache'
+import commConfig from '@/config'
 import config from './config'
 
 const stringify = (val: { [key: string]: any }): string => (
@@ -38,7 +39,7 @@ export default async (req: Request, res: Response): Promise<void> => {
   const apolloClient = new ApolloClient({
     ssrMode: true,
     link: new HttpLink({
-      uri: "https://metaphysics-production.artsy.net/v2",
+      uri: commConfig.gqlServerUrl,
       fetch,
     }),
     cache: createApolloCache(),
