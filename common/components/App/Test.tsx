@@ -2,16 +2,20 @@ import React, { type ReactNode } from 'react'
 import { useQuery, gql } from '@apollo/client'
 
 const testQuery = gql`
-  query Test {
+  query Test($isEditable: Boolean = false) {
     artwork(id: "test-id") {
       slug
-      internalID
+      internalID @include(if: $isEditable)
     }
   }
 `
 
 export default function Test(): ReactNode {
-  const { error } = useQuery(testQuery)
+  const { error } = useQuery(testQuery, {
+    variables: {
+      isEditable: false,
+    },
+  })
   console.log(typeof error)
   return (
     <div>

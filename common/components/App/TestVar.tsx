@@ -5,13 +5,17 @@ const testQuery = gql`
   query TestVar($isEditable: Boolean = false) {
     artwork(id: "test-id") {
       slug
-      internalID
+      internalID @include(if: $isEditable)
     }
   }
 `
 
 export default function TestVar(): ReactNode {
-  const { error } = useQuery(testQuery)
+  const { error } = useQuery(testQuery, {
+    variables: {
+      // isEditable: false,
+    },
+  })
   console.log(typeof error)
   return (
     <div>
