@@ -2,16 +2,15 @@ import React, { type FC } from 'react'
 import { gql, useQuery } from '@apollo/client'
 
 const TEST_QUERY = gql`
-  query Test {
+  query Test($isEditable: Boolean = false) {
     test
   }
 `
 
 const Test: FC = () => {
-  const { error, data } = useQuery(TEST_QUERY, {
-    // fetchPolicy: 'cache-first',
-  })
-  console.log(error, data)
+  const { error } = useQuery(TEST_QUERY)
+  console.log(error)
+
   if (error) return <div>Error</div>
   return null
 }
