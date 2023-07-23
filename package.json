@@ -6,7 +6,7 @@
   "description": "React, TypeScript, webpack unopinionated (mostly) boilerplate",
   "author": "Yaroslav Kiliba",
   "scripts": {
-    "start": "concurrently --raw \"npm run build:server-dev\" \"npm run build:client-dev\" \"npm run start:be\"",
+    "start": "concurrently --raw \"npm run build:server-dev\" \"npm run build:client-dev\"",
     "start:prod": "node server-prod-dist",
     "start:be": "tsc-watch -p ./tsconfigBe.json --onSuccess \"node ./bedist/index.js\" --onFailure \"node ./bedist/index.js\"",
     "build:start": "npm run build && npm run start:prod",

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react'
 import { hydrateRoot, createRoot } from 'react-dom/client'
 import { ApolloProvider, ApolloClient, HttpLink, type NormalizedCacheObject } from '@apollo/client'
@@ -26,20 +27,20 @@ const getTree = () => (
   </ApolloProvider>
 )
 
-const container = document.getElementById('react-view')
-if (container) {
-  const rerender = () => {
-    const root = createRoot(container)
-    root.render(getTree())
-  }
+// const container = document.getElementById('react-view')
+// if (container) {
+//   const rerender = () => {
+//     const root = createRoot(container)
+//     root.render(getTree())
+//   }
 
-  loadableReady(() => {
-    hydrateRoot(container, getTree())
-  })
+//   loadableReady(() => {
+//     hydrateRoot(container, getTree())
+//   })
 
-  if (module.hot) {
-    module.hot.accept('@/components/App', () => {
-      rerender()
-    })
-  }
-}
+//   if (module.hot) {
+//     module.hot.accept('@/components/App', () => {
+//       rerender()
+//     })
+//   }
+// }

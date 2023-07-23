@@ -2,7 +2,7 @@ import React, { type ReactNode } from 'react'
 import { useQuery, gql } from '@apollo/client'
 
 const testQuery = gql`
-  query Test {
+  query TestVar($isEditable: Boolean = false) {
     artwork(id: "test-id") {
       slug
       internalID
@@ -10,7 +10,7 @@ const testQuery = gql`
   }
 `
 
-export default function Test(): ReactNode {
+export default function TestVar(): ReactNode {
   const { error } = useQuery(testQuery)
   console.log(typeof error)
   return (
