@@ -2,7 +2,7 @@ import React, { type ReactNode } from 'react'
 import { useQuery, gql } from '@apollo/client'
 
 const testQuery = gql`
-  query TestVar($isEditable: Boolean = false) {
+  query TestVar($isEditable: Boolean! = false) {
     artwork(id: "test-id") {
       slug
       internalID @include(if: $isEditable)
